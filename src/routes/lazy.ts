@@ -37,3 +37,11 @@ export const StudentsPage = lazy(
 export const StudentRegisterPage = lazy(
   () => import("@/features/user/pages/StudentRegisterPage"),
 );
+
+export const ListBooksPage = lazy(
+  () => import("@/features/books/page/ListBooksPage"),
+);
+
+export const BookCreatePage = lazy(
+  () => import("@/features/books/page/BookCreatePage"),
+);

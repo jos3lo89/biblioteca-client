@@ -12,6 +12,8 @@ import {
   PeriodsPage,
   StudentsPage,
   StudentRegisterPage,
+  ListBooksPage,
+  BookCreatePage,
 } from "./lazy";
 import AdminLayout from "@/layouts/AdminLayout";
 import StudentLayout from "@/layouts/StudentLayout";
@@ -58,6 +60,14 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/periods",
         element: <PeriodsPage />,
+      },
+      {
+        path: "/admin/books",
+        element: <ListBooksPage />,
+      },
+      {
+        path: "/admin/books/create",
+        element: <BookCreatePage />,
       },
     ],
   },
