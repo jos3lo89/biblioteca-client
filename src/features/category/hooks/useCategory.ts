@@ -1,13 +1,16 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { categoryService } from "../services/category.service";
 import { toast } from "sonner";
 
 export const useCategory = () => {
+  const queryClient = useQueryClient();
+
   const createCategory = useMutation({
     mutationKey: ["categories"],
     mutationFn: categoryService.createCategory,
     onSuccess: () => {
       toast.success("Categoría creada exitosamente");
+      queryClient.invalidateQueries({ queryKey: ["list", "categories"] });
     },
     onError: (error) => {
       if (error instanceof Error) {
@@ -29,8 +32,20 @@ export const useCategory = () => {
     queryFn: categoryService.getAllCategories,
   });
 
+  const getCategories = (
+    page: number = 1,
+    limit: number = 5,
+    search?: string,
+  ) => {
+    return useQuery({
+      queryKey: ["list", "categories", page, limit, search],
+      queryFn: () => categoryService.getCategories(page, limit, search),
+    });
+  };
+
   return {
     createCategory,
-    listCategories: getAllCategories,
+    getCategories,
+    getAllCategories,
   };
 };

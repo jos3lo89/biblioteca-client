@@ -1,20 +1,24 @@
-export interface CreateCategoryResponse {
+export interface CreatedPeriodResponse {
   id: string;
   name: string;
-  slug: string;
+  startDate: string;
+  endDate: string;
+  isCurrent: boolean;
   createdAt: string;
   updatedAt: string;
 }
 
-export interface GetCategoriesResponse {
+export interface GetAllPeriodsResponse {
   data: Array<{
     id: string;
     name: string;
-    slug: string;
+    startDate: string;
+    endDate: string;
+    isCurrent: boolean;
     createdAt: string;
     updatedAt: string;
     _count: {
-      books: number;
+      enrollments: number;
     };
   }>;
   meta: {
@@ -28,13 +32,12 @@ export interface GetCategoriesResponse {
   };
 }
 
-export interface GetAllCategoriesResponse {
+export interface SetCurrentPeriodResponse {
   id: string;
   name: string;
-  slug: string;
+  startDate: string;
+  endDate: string;
+  isCurrent: boolean;
   createdAt: string;
   updatedAt: string;
-  _count: {
-    books: number;
-  };
 }
