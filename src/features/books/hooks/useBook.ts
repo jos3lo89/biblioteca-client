@@ -2,10 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 import { bookService } from "../services/book.service";
 
 export const useBook = () => {
-  const listBooks = useQuery({
-    queryKey: ["list", "books"],
-    queryFn: bookService.getAllBooks,
-  });
+  const listBooks = (
+    page: number,
+    limit: number,
+    search?: string,
+    category?: string,
+  ) => {
+    return useQuery({
+      queryKey: ["list", "books", page, limit, search, category],
+      queryFn: () => bookService.getAllBooks(page, limit, search, category),
+    });
+  };
 
   const getBookById = (id: string) => {
     return useQuery({
