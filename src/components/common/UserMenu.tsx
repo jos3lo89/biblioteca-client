@@ -26,7 +26,7 @@ const UserMenu = () => {
       >
         <User className="w-5 h-5 shrink-0" />
         <span className="hidden md:inline ml-3 font-bold text-sm tracking-tight">
-          Archivo de {user.name}
+          {user.name}
         </span>
         <div className="absolute inset-x-0 -bottom-px h-px bg-linear-to-r from-transparent via-[#b59a5d]/40 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
       </Button>

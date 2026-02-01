@@ -32,7 +32,6 @@ const ProfilePage = () => {
     { label: "Apellidos", value: user.lastName, icon: User },
     { label: "DNI / Identificación", value: user.dni, icon: Fingerprint },
     { label: "Rol de Acceso", value: user.role, icon: Shield, highlight: true },
-    { label: "ID de Registro", value: user.id, icon: Hash },
   ];
 
   return (
@@ -53,11 +52,6 @@ const ProfilePage = () => {
             <h1 className="text-4xl font-black text-white tracking-tight lg:text-5xl">
               Identidad <span className="text-[#b59a5d]">Académica</span>
             </h1>
-            <p className="text-slate-400 font-serif italic text-lg leading-relaxed">
-              "El conocimiento de uno mismo es el primer paso hacia la sabiduría
-              universal."
-            </p>
-            <div className="h-1.5 w-32 bg-linear-to-r from-[#b59a5d] to-transparent rounded-full mt-2 shadow-[0_0_15px_rgba(181,154,93,0.3)]" />
           </div>
         </section>
       </div>
@@ -142,11 +136,11 @@ const ProfilePage = () => {
       </div>
 
       {/* Footer Branding */}
-      <div className="pt-10 text-center opacity-30">
+      {/* <div className="pt-10 text-center opacity-30">
         <p className="text-[10px] font-black uppercase tracking-[0.4em]">
           Firma Digital v1.22.4
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };

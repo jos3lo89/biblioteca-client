@@ -81,11 +81,11 @@ const BooksPage = () => {
           <h1 className="text-4xl font-black text-white tracking-tight lg:text-5xl">
             Acervo <span className="text-[#b59a5d]">Bibliográfico</span>
           </h1>
-          <p className="text-slate-400 font-serif italic text-lg leading-relaxed">
+          {/* <p className="text-slate-400 font-serif italic text-lg leading-relaxed">
             "Explora la sabiduría colectiva curada por nuestros administradores
             maestros."
           </p>
-          <div className="h-1.5 w-32 bg-linear-to-r from-[#b59a5d] to-transparent rounded-full mt-4 shadow-[0_0_15px_rgba(181,154,93,0.3)]" />
+          <div className="h-1.5 w-32 bg-linear-to-r from-[#b59a5d] to-transparent rounded-full mt-4 shadow-[0_0_15px_rgba(181,154,93,0.3)]" /> */}
         </div>
 
         {/* Filters & Search - Skill: frontend-design */}
@@ -143,7 +143,7 @@ const BooksPage = () => {
                 key={book.id}
                 onClick={() => handleBookClick(book.id)}
                 style={{ animationDelay: `${index * 50}ms` }}
-                className="group relative flex flex-col bg-white/5 backdrop-blur-md border border-white/10 rounded-[2rem] overflow-hidden transition-all duration-500 hover:bg-white/10 hover:border-[#b59a5d]/40 hover:translate-y-[-8px] cursor-pointer shadow-2xl animate-in fade-in slide-in-from-bottom-8 fill-mode-backwards"
+                className="group relative flex flex-col bg-white/5 backdrop-blur-md border border-white/10 rounded-t-[2rem] overflow-hidden transition-all duration-500 hover:bg-white/10 hover:border-[#b59a5d]/40 hover:translate-y-[-8px] cursor-pointer shadow-2xl animate-in fade-in slide-in-from-bottom-8 fill-mode-backwards"
               >
                 {/* Book Cover Container */}
                 <div className="aspect-[3/4.5] relative overflow-hidden bg-[#0b1120]">
@@ -228,10 +228,10 @@ const BooksPage = () => {
       </section>
 
       {/* Footer Insight */}
-      <div className="pt-10 text-center font-serif text-slate-600 text-xs italic tracking-wide">
+      {/* <div className="pt-10 text-center font-serif text-slate-600 text-xs italic tracking-wide">
         Registros almacenados bajo la supervisión del Sistema de Gestión de
         Acervo Bibliográfico v1.0
-      </div>
+      </div> */}
     </div>
   );
 };

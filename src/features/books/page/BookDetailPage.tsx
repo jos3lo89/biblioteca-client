@@ -191,7 +191,7 @@ const BookDetailPage = () => {
       </div>
 
       {/* Footer Branding */}
-      <div className="pt-20 text-center opacity-30">
+      {/* <div className="pt-20 text-center opacity-30">
         <div className="flex items-center justify-center gap-4 mb-4">
           <div className="h-px w-12 bg-slate-100" />
           <FileText className="w-5 h-5" />
@@ -200,7 +200,7 @@ const BookDetailPage = () => {
         <p className="text-[10px] font-black uppercase tracking-[0.4em]">
           Ex Libris Digitalis
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };

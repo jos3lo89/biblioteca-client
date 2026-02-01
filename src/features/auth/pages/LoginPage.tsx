@@ -79,7 +79,7 @@ const LoginPage = () => {
                 </div>
                 <div>
                   <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-[#b59a5d]">
-                    Ex Libris
+                    Acervo
                   </h2>
                   <h1 className="text-3xl font-extrabold tracking-tight text-white lg:text-4xl">
                     Biblioteca Virtual
@@ -93,14 +93,14 @@ const LoginPage = () => {
                 </p>
                 <div className="h-1 w-20 bg-linear-to-r from-[#b59a5d] to-transparent rounded-full" />
                 <p className="text-slate-400 text-base">
-                  Accede a nuestra colección curada de libros publicados por
-                  administradores certificados. Explora, aprende y crece en un
-                  entorno diseñado para el estudio profundo.
+                  Accede a nuestra colección de libros publicados por los
+                  administradores. Explora, aprende y crece en un entorno
+                  diseñado para el estudio profundo.
                 </p>
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
+            {/* <div className="grid gap-4 sm:grid-cols-2">
               <div className="group rounded-2xl border border-white/5 bg-white/5 p-5 backdrop-blur-sm transition-all hover:bg-white/10 hover:border-[#b59a5d]/30">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 rounded-lg bg-[#b59a5d]/20 text-[#b59a5d]">
@@ -130,7 +130,7 @@ const LoginPage = () => {
                   lectura.
                 </p>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Right Column: Login Card */}
@@ -227,11 +227,11 @@ const LoginPage = () => {
                   </Button>
                 </form>
 
-                <div className="mt-8 text-center">
+                {/* <div className="mt-8 text-center">
                   <p className="text-xs text-slate-500 italic">
                     Sistema de Gestión de Acervo Bibliográfico v1.0
                   </p>
-                </div>
+                </div> */}
               </CardContent>
             </Card>
           </div>
