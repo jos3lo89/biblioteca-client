@@ -8,11 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 /**
  * CreatedCategoryPage - Internal system for organizing the digital acervo into scholarly categories.
  */
 const CreatedCategoryPage = () => {
   const { createCategory } = useCategory();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -40,7 +43,10 @@ const CreatedCategoryPage = () => {
 
   const onSubmit = (data: CategoryDto) => {
     createCategory.mutate(data, {
-      onSuccess: () => reset(),
+      onSuccess: () => {
+        reset();
+        navigate("/admin/categories");
+      },
     });
   };
 

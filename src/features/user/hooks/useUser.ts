@@ -1,9 +1,11 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { userService } from "../services/user.service";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 
 export const useUser = () => {
+  const queryClient = useQueryClient();
+
   const registerUser = useMutation({
     mutationKey: ["register-user"],
     mutationFn: userService.register,
@@ -43,6 +45,7 @@ export const useUser = () => {
     mutationFn: userService.registerStudent,
     onSuccess: () => {
       toast.success("Estudiante registrado exitosamente");
+      queryClient.invalidateQueries({ queryKey: ["list", "students"] });
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
