@@ -50,7 +50,7 @@ const BooksPage = () => {
 
   const handleBookClick = (id: string) => {
     console.log("Visualizando Libro ID:", id);
-    navigate(`/books/${id}`);
+    navigate(`/book/${id}`);
   };
 
   if (listBooks.isLoading) {

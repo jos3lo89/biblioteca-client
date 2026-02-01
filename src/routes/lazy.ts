@@ -5,3 +5,6 @@ export const DashboardPage = lazy(
   () => import("@/features/dashboard/pages/DashboardPage"),
 );
 export const BooksPage = lazy(() => import("@/features/books/page/BooksPage"));
+export const BookDetailPage = lazy(
+  () => import("@/features/books/page/BookDetailPage"),
+);

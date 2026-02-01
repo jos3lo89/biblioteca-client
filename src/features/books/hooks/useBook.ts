@@ -7,5 +7,11 @@ export const useBook = () => {
     queryFn: bookService.getAllBooks,
   });
 
-  return { listBooks };
+  const getBookById = (id: string) => {
+    return useQuery({
+      queryKey: ["get", "book", id],
+      queryFn: () => bookService.getBookById(id),
+    });
+  };
+  return { listBooks, getBookById };
 };
