@@ -9,7 +9,7 @@ This document provides guidelines for agentic coding assistants working on this 
 - Vite 7 with SWC for fast builds
 - ESLint 9 with flat config
 - No test framework currently configured
-- Tailwind CSS 4, Radix UI, React Query, React Router, Zustand, React Hook Form + Zod
+- Tailwind CSS 4, Radix UI (dialog, alert-dialog, slot), React Query, React Router, Zustand, React Hook Form + Zod, React PDF
 
 **Package Manager:** npm
 

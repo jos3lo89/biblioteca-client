@@ -12,13 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Library,
-  LockKeyhole,
-  UserRound,
-  GraduationCap,
-  BookOpenCheck,
-} from "lucide-react";
+import { Library, LockKeyhole, UserRound, GraduationCap } from "lucide-react";
 
 /**
  * LoginPage - Refactored with a Virtual Library / Scholarly theme.

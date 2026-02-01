@@ -9,7 +9,6 @@ import {
   Tag,
   Calendar,
   Hash,
-  FileText,
   Bookmark,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";

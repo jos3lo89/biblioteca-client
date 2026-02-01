@@ -4,7 +4,6 @@ import {
   LogOut,
   Shield,
   Fingerprint,
-  Hash,
   BookOpen,
   ArrowLeft,
 } from "lucide-react";
