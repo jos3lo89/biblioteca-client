@@ -7,6 +7,7 @@ import {
   DashboardPage,
   LoginPage,
   ProfilePage,
+  UserRegisterPage,
 } from "./lazy";
 import AdminLayout from "@/layouts/AdminLayout";
 import StudentLayout from "@/layouts/StudentLayout";
@@ -33,6 +34,10 @@ export const routes = createBrowserRouter([
       {
         path: "/dashboard",
         element: <DashboardPage />,
+      },
+      {
+        path: "/users/register",
+        element: <UserRegisterPage />,
       },
     ],
   },
