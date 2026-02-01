@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { categoryService } from "../services/category.service";
 import { toast } from "sonner";
 
@@ -24,7 +24,13 @@ export const useCategory = () => {
     },
   });
 
+  const getAllCategories = useQuery({
+    queryKey: ["list", "categories"],
+    queryFn: categoryService.getAllCategories,
+  });
+
   return {
     createCategory,
+    listCategories: getAllCategories,
   };
 };

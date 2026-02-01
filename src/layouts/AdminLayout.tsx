@@ -10,9 +10,13 @@ import {
   Menu,
   X,
   BookOpen,
+  ChevronDown,
+  ChevronRight,
+  List,
+  PlusCircle,
 } from "lucide-react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
@@ -25,21 +29,52 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
+interface NavItem {
+  label: string;
+  path?: string;
+  icon: any;
+  children?: { label: string; path: string; icon: any }[];
+}
+
 /**
- * AdminLayout - Immersive administration environment with responsive sidebars.
+ * AdminLayout - Immersive administration environment with responsive sidebars and sub-menus.
  */
 const AdminLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+
   const location = useLocation();
   const { logout } = useAuth();
 
-  const navItems = [
+  const navItems: NavItem[] = [
     { label: "Panel de Control", path: "/dashboard", icon: LayoutDashboard },
     { label: "Acervo Digital", path: "/books", icon: Library },
     { label: "Registrar Usuario", path: "/users/register", icon: UserPlus },
-    { label: "Gestión de Libros", path: "/admin/books", icon: BookMarked },
-    { label: "Categorías", path: "/admin/categories", icon: Tag },
+    {
+      label: "Categorías",
+      icon: Tag,
+      children: [
+        { label: "Listado", path: "/admin/categories", icon: List },
+        {
+          label: "Nueva Categoría",
+          path: "/admin/categories/create",
+          icon: PlusCircle,
+        },
+      ],
+    },
+    {
+      label: "Gestión de Libros",
+      icon: BookMarked,
+      children: [
+        { label: "Catálogo", path: "/admin/books", icon: List },
+        {
+          label: "Registrar Libro",
+          path: "/admin/books/create",
+          icon: PlusCircle,
+        },
+      ],
+    },
     {
       label: "Períodos Académicos",
       path: "/admin/periods",
@@ -48,22 +83,104 @@ const AdminLayout = () => {
     { label: "Matrículas", path: "/admin/enrollments", icon: ShieldCheck },
   ];
 
+  // Auto-expand menu if child is active
+  useEffect(() => {
+    navItems.forEach((item) => {
+      if (item.children?.some((child) => location.pathname === child.path)) {
+        if (!expandedItems.includes(item.label)) {
+          setExpandedItems((prev) => [...prev, item.label]);
+        }
+      }
+    });
+  }, [location.pathname]);
+
+  const toggleExpand = (label: string) => {
+    setExpandedItems((prev) =>
+      prev.includes(label) ? prev.filter((i) => i !== label) : [...prev, label],
+    );
+  };
+
   const handleLogout = () => {
     logout.mutate();
     setIsMobileMenuOpen(false);
   };
 
-  const NavLink = ({
+  const NavLinkComponent = ({
     item,
     isMobile = false,
   }: {
-    item: (typeof navItems)[0];
+    item: NavItem;
     isMobile?: boolean;
   }) => {
-    const isActive = location.pathname === item.path;
+    const hasChildren = !!item.children;
+    const isExpanded = expandedItems.includes(item.label);
+    const isActive = item.path
+      ? location.pathname === item.path
+      : item.children?.some((c) => location.pathname === c.path);
+
+    if (hasChildren) {
+      return (
+        <div className="space-y-1">
+          <button
+            onClick={() => toggleExpand(item.label)}
+            className={cn(
+              "group relative flex items-center h-12 w-full rounded-xl transition-all duration-300",
+              isActive && !isExpanded
+                ? "bg-white/5 text-white"
+                : "text-slate-400 hover:text-white hover:bg-white/5",
+            )}
+          >
+            <div className="w-12 h-12 shrink-0 flex items-center justify-center">
+              <item.icon
+                className={cn("w-5 h-5", isActive ? "text-[#b59a5d]" : "")}
+              />
+            </div>
+            {(isMobile || isSidebarOpen) && (
+              <>
+                <span className="font-bold text-sm tracking-tight flex-1 text-left">
+                  {item.label}
+                </span>
+                <div className="pr-4">
+                  {isExpanded ? (
+                    <ChevronDown className="w-4 h-4" />
+                  ) : (
+                    <ChevronRight className="w-4 h-4" />
+                  )}
+                </div>
+              </>
+            )}
+          </button>
+
+          {(isMobile || isSidebarOpen) && isExpanded && (
+            <div className="pl-6 space-y-1 animate-in slide-in-from-top-2 duration-300">
+              {item.children?.map((child) => {
+                const isChildActive = location.pathname === child.path;
+                return (
+                  <Link
+                    key={child.path}
+                    to={child.path}
+                    onClick={() => isMobile && setIsMobileMenuOpen(false)}
+                    className={cn(
+                      "flex items-center h-10 px-4 rounded-lg text-sm font-medium transition-all group",
+                      isChildActive
+                        ? "text-[#b59a5d] bg-[#b59a5d]/10"
+                        : "text-slate-500 hover:text-slate-300 hover:bg-white/5",
+                    )}
+                  >
+                    <child.icon className="w-3.5 h-3.5 mr-3" />
+                    {child.label}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      );
+    }
+
     return (
       <Link
-        to={item.path}
+        to={item.path!}
         onClick={() => isMobile && setIsMobileMenuOpen(false)}
         className={cn(
           "group relative flex items-center h-12 rounded-xl transition-all duration-300 overflow-hidden",
@@ -82,17 +199,12 @@ const AdminLayout = () => {
             )}
           />
         </div>
-        <span
-          className={cn(
-            "font-bold text-sm tracking-tight transition-all duration-300 whitespace-nowrap",
-            isMobile || isSidebarOpen
-              ? "opacity-100 translate-x-0"
-              : "opacity-0 -translate-x-4 invisible",
-          )}
-        >
-          {item.label}
-        </span>
-        {isActive && !isMobile && (
+        {(isMobile || isSidebarOpen) && (
+          <span className="font-bold text-sm tracking-tight transition-all duration-300 whitespace-nowrap">
+            {item.label}
+          </span>
+        )}
+        {isActive && !isMobile && isSidebarOpen && (
           <div className="absolute right-0 w-1.5 h-6 bg-[#0b1120]/20 rounded-l-full" />
         )}
       </Link>
@@ -101,7 +213,7 @@ const AdminLayout = () => {
 
   return (
     <div className="flex h-screen bg-[#0b1120] text-slate-100 overflow-hidden font-sans">
-      {/* 1. Mobile Shell (Sticky Top Bar) */}
+      {/* 1. Mobile Shell */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-[#0d1627] border-b border-white/5 px-6 flex items-center justify-between z-40">
         <div className="flex items-center gap-3">
           <div className="p-1.5 rounded-lg bg-[#b59a5d] text-[#0b1120]">
@@ -120,18 +232,20 @@ const AdminLayout = () => {
           </SheetTrigger>
           <SheetContent
             side="left"
-            className="w-[300px] bg-[#0d1627] border-r border-white/10 p-0 text-slate-100"
+            className="w-[300px] bg-[#0d1627] border-r border-white/10 p-0 text-slate-100 flex flex-col"
           >
-            <SheetHeader className="px-6 gap-3 border-b border-white/5 space-y-0 text-left">
-              <SheetTitle className="text-left text-lg font-bold tracking-tight text-white leading-none">
-                Biblioteca
+            <SheetHeader className="px-6 py-6 border-b border-white/5 text-left">
+              <SheetTitle className="text-lg font-bold tracking-tight text-white leading-none">
+                Biblioteca <span className="text-[#b59a5d]">Virtual</span>
               </SheetTitle>
-              <SheetDescription></SheetDescription>
+              <SheetDescription className="text-slate-500 text-xs text-left">
+                Gestión Administrativa
+              </SheetDescription>
             </SheetHeader>
 
-            <nav className="flex-1 py-8 px-4 space-y-2">
+            <nav className="flex-1 py-8 px-4 space-y-2 overflow-y-auto">
               {navItems.map((item) => (
-                <NavLink key={item.path} item={item} isMobile />
+                <NavLinkComponent key={item.label} item={item} isMobile />
               ))}
             </nav>
 
@@ -155,45 +269,39 @@ const AdminLayout = () => {
         </Sheet>
       </div>
 
-      {/* 2. Desktop Scholarly Sidebar */}
+      {/* 2. Desktop Sidebar */}
       <aside
         className={cn(
           "hidden lg:flex relative h-full bg-[#0d1627] border-r border-white/5 transition-all duration-500 ease-in-out z-50 flex-col shadow-2xl",
           isSidebarOpen ? "w-72" : "w-20",
         )}
       >
-        {/* Sidebar Header: Institutional Branding */}
         <div className="h-20 flex items-center px-6 gap-3 border-b border-white/5 overflow-hidden whitespace-nowrap">
           <div className="p-2 rounded-xl bg-[#b59a5d] text-[#0b1120] shadow-[0_0_20px_rgba(181,154,93,0.3)]">
             <BookOpen className="w-6 h-6" />
           </div>
-          <div
-            className={cn(
-              "transition-opacity duration-300",
-              isSidebarOpen ? "opacity-100" : "opacity-0 invisible",
-            )}
-          >
-            <h2 className="text-sm font-black uppercase tracking-[0.2em] text-[#b59a5d]">
-              Admin
-            </h2>
-            <h1 className="text-lg font-bold tracking-tight text-white leading-none">
-              Gestión Acervo
-            </h1>
-          </div>
+          {isSidebarOpen && (
+            <div>
+              <h2 className="text-xs font-black uppercase tracking-[0.2em] text-[#b59a5d]">
+                Admin
+              </h2>
+              <h1 className="text-lg font-bold tracking-tight text-white leading-none">
+                Gestión Acervo
+              </h1>
+            </div>
+          )}
         </div>
 
-        {/* Sidebar Navigation */}
         <nav className="flex-1 py-8 px-4 space-y-2 overflow-y-auto scrollbar-none">
           {navItems.map((item) => (
-            <NavLink key={item.path} item={item} />
+            <NavLinkComponent key={item.label} item={item} />
           ))}
         </nav>
 
-        {/* Sidebar Footer: Security & Profile */}
         <div className="p-4 border-t border-white/5 space-y-4">
           <ConfirmDialog
             title="¿Cerrar Panel Administrativo?"
-            description="Se cerrará su sesión de acceso privilegiado al Sistema de Gestión."
+            description="Se cerrará su sesión de acceso privilegiado."
             confirmText="Finalizar Sesión"
             variant="danger"
             onConfirm={handleLogout}
@@ -207,18 +315,14 @@ const AdminLayout = () => {
               <div className="w-12 h-12 shrink-0 flex items-center justify-center">
                 <LogOut className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
               </div>
-              <span
-                className={cn(
-                  "font-bold text-sm tracking-tight transition-all duration-300",
-                  isSidebarOpen ? "opacity-100" : "opacity-0 invisible",
-                )}
-              >
-                Cerrar Sesión
-              </span>
+              {isSidebarOpen && (
+                <span className="font-bold text-sm tracking-tight transition-all duration-300">
+                  Cerrar Sesión
+                </span>
+              )}
             </button>
           </ConfirmDialog>
 
-          {/* Toggle Button */}
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             className="flex items-center justify-center w-full h-10 rounded-lg bg-white/5 text-slate-500 hover:text-white transition-colors"
@@ -234,17 +338,13 @@ const AdminLayout = () => {
 
       {/* 3. Main Content Area */}
       <main className="flex-1 flex flex-col relative overflow-hidden mt-16 lg:mt-0">
-        {/* Header Ribbon (Decorative) */}
         <div className="h-1 bg-linear-to-r from-[#b59a5d] via-[#e2d1a4] to-transparent opacity-50" />
-
-        {/* Inner Scrollable Container */}
         <div className="flex-1 overflow-y-auto px-6 py-8 md:px-12 md:py-10 scroll-smooth">
-          <div className="max-w-7xl mx-auto min-h-full pb-20">
+          <div className="max-w-7xl mx-auto min-h-full pb-20 text-slate-100">
             <Outlet />
           </div>
         </div>
-
-        {/* Watermark Texture */}
+        {/* Background Texture Overlay */}
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.02] pointer-events-none" />
       </main>
     </div>

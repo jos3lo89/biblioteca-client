@@ -8,7 +8,8 @@ import {
   LoginPage,
   ProfilePage,
   UserRegisterPage,
-  CreatedCategoryPage,
+  CategoryCreatePage,
+  ListCategoriesPage,
 } from "./lazy";
 import AdminLayout from "@/layouts/AdminLayout";
 import StudentLayout from "@/layouts/StudentLayout";
@@ -42,7 +43,11 @@ export const routes = createBrowserRouter([
       },
       {
         path: "/admin/categories",
-        element: <CreatedCategoryPage />,
+        element: <ListCategoriesPage />,
+      },
+      {
+        path: "/admin/categories/create",
+        element: <CategoryCreatePage />,
       },
     ],
   },
