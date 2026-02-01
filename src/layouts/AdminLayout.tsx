@@ -1,11 +1,9 @@
 import {
-  Library,
   LayoutDashboard,
   UserPlus,
   BookMarked,
   Tag,
   CalendarRange,
-  ShieldCheck,
   LogOut,
   Menu,
   X,
@@ -50,7 +48,7 @@ const AdminLayout = () => {
 
   const navItems: NavItem[] = [
     { label: "Panel de Control", path: "/dashboard", icon: LayoutDashboard },
-    { label: "Acervo Digital", path: "/books", icon: Library },
+    // { label: "Acervo Digital", path: "/books", icon: Library },
     {
       label: "Estudiantes",
       icon: Users2,
@@ -92,7 +90,7 @@ const AdminLayout = () => {
       path: "/admin/periods",
       icon: CalendarRange,
     },
-    { label: "Matrículas", path: "/admin/enrollments", icon: ShieldCheck },
+    // { label: "Matrículas", path: "/admin/enrollments", icon: ShieldCheck },
   ];
 
   // Auto-expand menu if child is active
