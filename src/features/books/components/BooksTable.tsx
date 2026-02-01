@@ -8,7 +8,6 @@ import {
   BookOpen,
   User,
   Calendar,
-  Tag,
   MoreVertical,
   Layers,
 } from "lucide-react";
@@ -127,7 +126,7 @@ const BooksTable = () => {
                 >
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-4">
-                      <div className="relative w-12 h-16 rounded-lg overflow-hidden border border-white/10 shadow-lg group-hover:scale-105 transition-transform duration-500 flex-shrink-0">
+                      <div className="relative w-12 h-16 rounded-lg overflow-hidden border border-white/10 shadow-lg group-hover:scale-105 transition-transform duration-500 shrink-0">
                         <img
                           src={book.coverUrl}
                           alt={book.title}
