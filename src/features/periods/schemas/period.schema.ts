@@ -2,8 +2,8 @@ import z from "zod";
 
 export const createdPeriodSchema = z.object({
   name: z.string().min(1, "El nombre es requerido"),
-  startDate: z.date().min(1, "La fecha de inicio es requerida"),
-  endDate: z.date().min(1, "La fecha de fin es requerida"),
+  startDate: z.string(),
+  endDate: z.string(),
   isCurrent: z.boolean(),
 });
 

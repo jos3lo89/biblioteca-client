@@ -1,14 +1,17 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { periodService } from "../services/period.service";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 
 export const usePeriod = () => {
+  const queryClient = useQueryClient();
+
   const created = useMutation({
     mutationKey: ["period"],
     mutationFn: periodService.createPeriod,
     onSuccess: () => {
       toast.success("Periodo creado con exito");
+      queryClient.invalidateQueries({ queryKey: ["list", "period"] });
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
