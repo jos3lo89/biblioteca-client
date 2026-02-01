@@ -16,3 +16,7 @@ export interface LoginResponse {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface LogoutResponse {
+  message: string;
+}

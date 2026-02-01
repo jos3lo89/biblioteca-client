@@ -6,6 +6,7 @@ import {
   BooksPage,
   DashboardPage,
   LoginPage,
+  ProfilePage,
 } from "./lazy";
 import AdminLayout from "@/layouts/AdminLayout";
 import StudentLayout from "@/layouts/StudentLayout";
@@ -53,6 +54,10 @@ export const routes = createBrowserRouter([
       {
         path: "/book/:id/reading",
         element: <BookReadingPage />,
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
       },
     ],
   },

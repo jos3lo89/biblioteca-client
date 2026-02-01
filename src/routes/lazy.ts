@@ -12,3 +12,6 @@ export const BookDetailPage = lazy(
 export const BookReadingPage = lazy(
   () => import("@/features/books/page/BookReadingPage"),
 );
+export const ProfilePage = lazy(
+  () => import("@/features/user/pages/ProfilePage"),
+);

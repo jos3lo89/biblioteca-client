@@ -2,9 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import { authService } from "../services/auth.service";
 import { toast } from "sonner";
 import { useAuthStore } from "@/stores/auth.store";
+import { useNavigate } from "react-router-dom";
 
 export const useAuth = () => {
-  const { setUser } = useAuthStore();
+  const { setUser, logout: logoutStore } = useAuthStore();
+  const navigate = useNavigate();
 
   const login = useMutation({
     mutationKey: ["login"],
@@ -19,8 +21,11 @@ export const useAuth = () => {
       });
     },
     onError: (error) => {
-      toast.error("Error al iniciar sesión");
-      console.error(error);
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Error al iniciar sesión");
+      }
     },
     onMutate: () => {
       toast.loading("Iniciando sesión", { id: "login" });
@@ -30,7 +35,30 @@ export const useAuth = () => {
     },
   });
 
+  const logout = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: authService.logout,
+    onSuccess: () => {
+      logoutStore();
+      navigate("/login");
+    },
+    onError: (error) => {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Error al cerrar sesión");
+      }
+    },
+    onMutate: () => {
+      toast.loading("Cerrando sesión", { id: "logout" });
+    },
+    onSettled: () => {
+      toast.dismiss("logout");
+    },
+  });
+
   return {
     login,
+    logout,
   };
 };
