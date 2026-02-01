@@ -4,6 +4,7 @@ import { BooksPage, DashboardPage, LoginPage } from "./lazy";
 import AdminLayout from "@/layouts/AdminLayout";
 import StudentLayout from "@/layouts/StudentLayout";
 import AuthGuard from "@/guards/AuthGuard";
+import NotFound from "@/components/common/NotFound";
 
 export const routes = createBrowserRouter([
   {
@@ -43,6 +44,6 @@ export const routes = createBrowserRouter([
   },
   {
     path: "*",
-    element: <p>Not found page</p>,
+    element: <NotFound />,
   },
 ]);

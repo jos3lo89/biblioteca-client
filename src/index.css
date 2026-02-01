@@ -118,6 +118,12 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#0b1120] text-slate-100 min-h-screen relative font-sans selection:bg-[#b59a5d]/30;
+  }
+
+  body::before {
+    content: "";
+    @apply fixed inset-0 pointer-events-none opacity-[0.03] z-[-1];
+    background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
   }
 }
