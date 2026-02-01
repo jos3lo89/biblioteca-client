@@ -12,11 +12,16 @@ import {
   ShieldAlert,
   Hash,
   CalendarDays,
+  Search,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
 
 const StudentsList = () => {
   const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
   const limit = 5;
   const { listStudents } = useUser();
 
@@ -25,7 +30,22 @@ const StudentsList = () => {
     isLoading,
     isError,
     refetch,
-  } = listStudents(page, limit);
+  } = listStudents(page, limit, searchTerm);
+
+  const { register, handleSubmit, reset } = useForm<{ search: string }>({
+    defaultValues: { search: "" },
+  });
+
+  const handleSearch = (values: { search: string }) => {
+    setSearchTerm(values.search);
+    setPage(1);
+  };
+
+  const clearSearch = () => {
+    reset();
+    setSearchTerm("");
+    setPage(1);
+  };
 
   if (isLoading) {
     return <LoadingState message="Consultando el barchivo de estudiantes..." />;
@@ -44,20 +64,39 @@ const StudentsList = () => {
   const meta = studentsResponse?.meta;
   const studentData = studentsResponse?.data || [];
 
-  // TODO:  implemntar  la busqueda por nombre y dni
-
   return (
     <div className="bg-[#0d1627]/50 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl">
-      {/* Table Search & Filter Bar (Placeholder for now) */}
-      {/* <div className="p-6 border-b border-white/5 bg-white/2 flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1 group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#b59a5d] transition-colors" />
-          <input
-            placeholder="Buscar por nombre o DNI..."
-            className="h-12 w-full pl-12 bg-white/5 border-white/10 text-white focus:ring-[#b59a5d]/50 focus:border-[#b59a5d]/50 transition-all rounded-xl outline-none"
-          />
-        </div>
-      </div> */}
+      {/* Table Search & Filter Bar */}
+      <div className="p-6 border-b border-white/5 bg-white/2 flex flex-col sm:flex-row gap-4">
+        <form
+          onSubmit={handleSubmit(handleSearch)}
+          className="relative flex-1 group flex gap-3"
+        >
+          <div className="relative flex-1">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#b59a5d] transition-colors" />
+            <Input
+              {...register("search")}
+              placeholder="Buscar por nombre o DNI..."
+              className="h-12 w-full pl-12 bg-white/5 border-white/10 text-white focus:ring-[#b59a5d]/50 focus:border-[#b59a5d]/50 transition-all rounded-xl outline-none"
+            />
+            {searchTerm && (
+              <button
+                type="button"
+                onClick={clearSearch}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+          <Button
+            type="submit"
+            className="h-12 px-6 bg-[#b59a5d] text-[#0b1120] font-black uppercase tracking-widest hover:bg-[#c6a96e] rounded-xl transition-all shadow-lg active:scale-95"
+          >
+            Buscar
+          </Button>
+        </form>
+      </div>
 
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
@@ -83,7 +122,6 @@ const StudentsList = () => {
           <tbody className="divide-y divide-white/5">
             {studentData.length > 0 ? (
               studentData.map((student) => {
-                // Find current or latest enrollment
                 const currentEnrollment =
                   student.enrollments.find((e) => e.period.isCurrent) ||
                   student.enrollments[0];
@@ -182,9 +220,21 @@ const StudentsList = () => {
                     <div className="p-4 rounded-full bg-white/5 text-slate-600">
                       <Users2 className="w-10 h-10" />
                     </div>
-                    <p className="text-slate-500 font-serif italic text-lg">
-                      No se han encontrado estudiantes registrados.
-                    </p>
+                    <div className="space-y-2">
+                      <p className="text-slate-500 font-serif italic text-lg">
+                        {searchTerm
+                          ? `No se encontraron resultados para "${searchTerm}"`
+                          : "No se han encontrado estudiantes registrados."}
+                      </p>
+                      {searchTerm && (
+                        <button
+                          onClick={clearSearch}
+                          className="text-[#b59a5d] text-sm font-bold uppercase tracking-widest hover:text-white transition-colors underline underline-offset-8"
+                        >
+                          Limpiar búsqueda
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </td>
               </tr>

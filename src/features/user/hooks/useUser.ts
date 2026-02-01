@@ -27,10 +27,14 @@ export const useUser = () => {
     },
   });
 
-  const listStudents = (page: number = 1, limit: number = 5) => {
+  const listStudents = (
+    page: number = 1,
+    limit: number = 5,
+    search?: string,
+  ) => {
     return useQuery({
-      queryKey: ["list", "students", page, limit],
-      queryFn: () => userService.listStudents(page, limit),
+      queryKey: ["list", "students", page, limit, search],
+      queryFn: () => userService.listStudents(page, limit, search),
     });
   };
 

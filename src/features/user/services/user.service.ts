@@ -17,11 +17,12 @@ export const userService = {
     return data;
   },
 
-  listStudents: async (page: number, limit: number) => {
+  listStudents: async (page: number, limit: number, search?: string) => {
     const { data } = await http.get<ListStudentsResponse>("/users/students", {
       params: {
         page,
         limit,
+        search: search || "",
       },
     });
     return data;
