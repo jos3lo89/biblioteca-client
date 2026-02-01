@@ -59,3 +59,17 @@ export interface BookForReading {
   url: string;
   expiresAt: string;
 }
+
+export interface CreateBookResponse {
+  id: string;
+  title: string;
+  author: string;
+  description: string;
+  coverKey: string;
+  fileKey: string;
+  isDownloadable: boolean;
+  categoryId: string;
+  createdAt: string;
+  updatedAt: string;
+  coverUrl: string;
+}

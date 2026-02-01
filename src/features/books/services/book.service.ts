@@ -1,6 +1,7 @@
 import http from "@/config/axios";
 import type {
   BookForReading,
+  CreateBookResponse,
   GetBookByIdResponse,
   ListBooksResponse,
 } from "../interfaces/book.interface";
@@ -25,6 +26,11 @@ export const bookService = {
 
   getBookForReading: async (id: string) => {
     const { data } = await http.get<BookForReading>(`/books/${id}/read`);
+    return data;
+  },
+
+  createBook: async (book: FormData) => {
+    const { data } = await http.post<CreateBookResponse>(`/books`, book);
     return data;
   },
 };
