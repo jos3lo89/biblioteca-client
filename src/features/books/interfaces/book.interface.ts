@@ -20,3 +20,8 @@ export interface Category {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface BookForReading {
+  url: string;
+  expiresAt: string;
+}

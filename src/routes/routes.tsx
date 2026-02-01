@@ -1,6 +1,12 @@
 import AuthLayout from "@/layouts/AuthLayout";
 import { createBrowserRouter } from "react-router-dom";
-import { BookDetailPage, BooksPage, DashboardPage, LoginPage } from "./lazy";
+import {
+  BookDetailPage,
+  BookReadingPage,
+  BooksPage,
+  DashboardPage,
+  LoginPage,
+} from "./lazy";
 import AdminLayout from "@/layouts/AdminLayout";
 import StudentLayout from "@/layouts/StudentLayout";
 import AuthGuard from "@/guards/AuthGuard";
@@ -43,6 +49,10 @@ export const routes = createBrowserRouter([
       {
         path: "/book/:id",
         element: <BookDetailPage />,
+      },
+      {
+        path: "/book/:id/reading",
+        element: <BookReadingPage />,
       },
     ],
   },

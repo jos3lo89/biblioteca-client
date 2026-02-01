@@ -40,6 +40,7 @@ const BookDetailPage = () => {
 
   const handleReadClick = () => {
     console.log("Iniciando lectura de Libro ID:", id);
+    navigate(`/book/${id}/reading`);
   };
 
   if (isLoading) {
