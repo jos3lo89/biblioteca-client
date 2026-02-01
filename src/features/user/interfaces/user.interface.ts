@@ -49,3 +49,32 @@ export interface ListStudentsResponse {
     prevPage: number | null;
   };
 }
+
+export interface RegisterStudentResponse {
+  id: string;
+  dni: string;
+  name: string;
+  lastName: string;
+  fullName: string;
+  role: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  enrollments: Array<{
+    id: string;
+    userId: string;
+    periodId: string;
+    canAccess: boolean;
+    createdAt: string;
+    updatedAt: string;
+    period: {
+      id: string;
+      name: string;
+      startDate: string;
+      endDate: string;
+      isCurrent: boolean;
+      createdAt: string;
+      updatedAt: string;
+    };
+  }>;
+}

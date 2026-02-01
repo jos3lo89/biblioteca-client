@@ -33,8 +33,33 @@ export const useUser = () => {
       queryFn: () => userService.listStudents(page, limit),
     });
   };
+
+  const registerStudent = useMutation({
+    mutationKey: ["register", "student"],
+    mutationFn: userService.registerStudent,
+    onSuccess: () => {
+      toast.success("Estudiante registrado exitosamente");
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      } else {
+        toast.error("Error al registrar estudiante");
+      }
+    },
+    onMutate: () => {
+      toast.loading("Registrando estudiante...", {
+        id: "register-student",
+      });
+    },
+    onSettled: () => {
+      toast.dismiss("register-student");
+    },
+  });
+
   return {
     registerUser,
     listStudents,
+    registerStudent,
   };
 };

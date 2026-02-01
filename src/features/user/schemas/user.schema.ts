@@ -17,3 +17,12 @@ export type RegisterUserDto = z.infer<typeof registerUserSchema>;
 //     "password": "123456",
 //     "role": "STUDENT"
 // }
+
+export const registerStudentSchema = z.object({
+  dni: z.string().min(3, "El DNI debe tener al menos 3 caracteres"),
+  name: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
+  lastName: z.string().min(3, "El apellido debe tener al menos 3 caracteres"),
+  periodId: z.string().uuid("Seleccione un periodo válido"),
+});
+
+export type RegisterStudentDto = z.infer<typeof registerStudentSchema>;

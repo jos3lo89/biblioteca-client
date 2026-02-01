@@ -24,7 +24,7 @@ const StudentsPage = () => {
         <Link to="/admin/students-create">
           <Button className="h-12 px-6 bg-[#b59a5d] text-[#0b1120] font-black uppercase tracking-widest hover:bg-[#c6a96e] rounded-xl transition-all shadow-lg shadow-[#b59a5d]/20 flex items-center gap-2 active:scale-95">
             <UserPlus className="w-5 h-5" />
-            Registrar Alumno
+            Registrar estudiante
           </Button>
         </Link>
       </div>

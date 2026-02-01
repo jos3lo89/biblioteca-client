@@ -12,7 +12,6 @@ import {
   ShieldAlert,
   Hash,
   CalendarDays,
-  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -45,10 +44,12 @@ const StudentsList = () => {
   const meta = studentsResponse?.meta;
   const studentData = studentsResponse?.data || [];
 
+  // TODO:  implemntar  la busqueda por nombre y dni
+
   return (
     <div className="bg-[#0d1627]/50 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl">
       {/* Table Search & Filter Bar (Placeholder for now) */}
-      <div className="p-6 border-b border-white/5 bg-white/2 flex flex-col sm:flex-row gap-4">
+      {/* <div className="p-6 border-b border-white/5 bg-white/2 flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1 group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#b59a5d] transition-colors" />
           <input
@@ -56,7 +57,7 @@ const StudentsList = () => {
             className="h-12 w-full pl-12 bg-white/5 border-white/10 text-white focus:ring-[#b59a5d]/50 focus:border-[#b59a5d]/50 transition-all rounded-xl outline-none"
           />
         </div>
-      </div>
+      </div> */}
 
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">

@@ -1,5 +1,8 @@
 import http from "@/config/axios";
-import type { RegisterUserDto } from "../schemas/user.schema";
+import type {
+  RegisterStudentDto,
+  RegisterUserDto,
+} from "../schemas/user.schema";
 import type {
   ListStudentsResponse,
   RegisterUserResponse,
@@ -21,6 +24,14 @@ export const userService = {
         limit,
       },
     });
+    return data;
+  },
+
+  registerStudent: async (userData: RegisterStudentDto) => {
+    const { data } = await http.post<RegisterUserResponse>(
+      "/users/students/register",
+      userData,
+    );
     return data;
   },
 };

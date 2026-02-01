@@ -33,3 +33,7 @@ export const PeriodsPage = lazy(
 export const StudentsPage = lazy(
   () => import("@/features/user/pages/StudentsPage"),
 );
+
+export const StudentRegisterPage = lazy(
+  () => import("@/features/user/pages/StudentRegisterPage"),
+);
