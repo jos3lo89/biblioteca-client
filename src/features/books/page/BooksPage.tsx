@@ -33,7 +33,7 @@ const BooksPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const { listBooks } = useBook();
-  const { listCategories } = useCategory();
+  const { getAllCategories } = useCategory();
 
   const {
     data: booksData,
@@ -67,7 +67,7 @@ const BooksPage = () => {
 
   const books = booksData?.data || [];
   const meta = booksData?.meta;
-  const categories = listCategories.data || [];
+  const categories = getAllCategories.data || [];
 
   if (isLoading) {
     return (

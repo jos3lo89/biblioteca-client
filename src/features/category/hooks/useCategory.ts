@@ -29,8 +29,20 @@ export const useCategory = () => {
     queryFn: categoryService.getAllCategories,
   });
 
+  const getCategories = (
+    page: number = 1,
+    limit: number = 5,
+    search?: string,
+  ) => {
+    return useQuery({
+      queryKey: ["list", "categories", page, limit, search],
+      queryFn: () => categoryService.getCategories(page, limit, search),
+    });
+  };
+
   return {
     createCategory,
-    listCategories: getAllCategories,
+    getCategories,
+    getAllCategories,
   };
 };

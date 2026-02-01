@@ -10,40 +10,63 @@ import {
   MoreVertical,
   Calendar,
   Search,
-  Filter,
+  X,
+  ChevronLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
+import { cn } from "@/lib/utils";
 
 /**
  * ListCategoriesPage - Administrative register of all manuscript classifications.
  */
 const ListCategoriesPage = () => {
-  const { listCategories } = useCategory();
+  const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const limit = 5;
+  const { getCategories } = useCategory();
 
-  if (listCategories.isLoading) {
+  const {
+    data: categoriesResponse,
+    isLoading,
+    isError,
+    refetch,
+  } = getCategories(page, limit, searchTerm);
+
+  const { register, handleSubmit, reset } = useForm<{ search: string }>({
+    defaultValues: { search: "" },
+  });
+
+  const handleSearch = (values: { search: string }) => {
+    setSearchTerm(values.search);
+    setPage(1);
+  };
+
+  const clearSearch = () => {
+    reset();
+    setSearchTerm("");
+    setPage(1);
+  };
+
+  if (isLoading) {
     return <LoadingState message="Consultando el archivo de categorías..." />;
   }
 
-  if (listCategories.isError) {
+  if (isError) {
     return (
       <ErrorState
         message="No se pudo recuperar el listado de categorías del servidor."
-        onRetry={() => listCategories.refetch()}
+        onRetry={() => refetch()}
         title="Error de Conexión"
       />
     );
   }
 
-  const filteredCategories =
-    listCategories.data?.filter(
-      (cat) =>
-        cat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        cat.slug.toLowerCase().includes(searchTerm.toLowerCase()),
-    ) || [];
+  const categories = categoriesResponse?.data || [];
+  const meta = categoriesResponse?.meta;
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
@@ -53,10 +76,7 @@ const ListCategoriesPage = () => {
           <h1 className="text-4xl font-black text-white tracking-tight">
             Archivo de <span className="text-[#b59a5d]">Categorías</span>
           </h1>
-          {/* <p className="text-slate-400 font-serif italic text-lg leading-relaxed">
-            Consulte y gestione las clasificaciones del acervo bibliográfico.
-          </p>
-          <div className="h-1.5 w-32 bg-linear-to-r from-[#b59a5d] to-transparent rounded-full mt-2" /> */}
+          <div className="h-1.5 w-32 bg-linear-to-r from-[#b59a5d] to-transparent rounded-full mt-2" />
         </div>
 
         <Link to="/admin/categories/create">
@@ -69,24 +89,36 @@ const ListCategoriesPage = () => {
 
       {/* Table & Filtering */}
       <div className="bg-[#0d1627]/50 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl">
-        {/* Table Search & Filter Bar */}
-        <div className="p-6 border-b border-white/5 bg-white/2 flex flex-col sm:flex-row gap-4">
-          <div className="relative flex-1 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#b59a5d] transition-colors" />
-            <Input
-              placeholder="Buscar por nombre o slug..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="h-12 pl-12 bg-white/5 border-white/10 text-white focus:ring-[#b59a5d]/50 focus:border-[#b59a5d]/50 transition-all rounded-xl"
-            />
-          </div>
-          <Button
-            variant="ghost"
-            className="h-12 border border-white/10 text-slate-400 hover:text-white hover:bg-white/5 rounded-xl px-4"
+        {/* Table Search Bar */}
+        <div className="p-6 border-b border-white/5 bg-white/2">
+          <form
+            onSubmit={handleSubmit(handleSearch)}
+            className="relative flex-1 group flex gap-3"
           >
-            <Filter className="w-4 h-4 mr-2" />
-            Filtrar
-          </Button>
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-[#b59a5d] transition-colors" />
+              <Input
+                {...register("search")}
+                placeholder="Buscar por nombre o slug..."
+                className="h-12 w-full pl-12 bg-white/5 border-white/10 text-white focus:ring-[#b59a5d]/50 focus:border-[#b59a5d]/50 transition-all rounded-xl outline-none"
+              />
+              {searchTerm && (
+                <button
+                  type="button"
+                  onClick={clearSearch}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+            <Button
+              type="submit"
+              className="h-12 px-6 bg-[#b59a5d] text-[#0b1120] font-black uppercase tracking-widest hover:bg-[#c6a96e] rounded-xl transition-all shadow-lg active:scale-95"
+            >
+              Buscar
+            </Button>
+          </form>
         </div>
 
         {/* Scholarly Table */}
@@ -112,8 +144,8 @@ const ListCategoriesPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {filteredCategories.length > 0 ? (
-                filteredCategories.map((cat) => (
+              {categories.length > 0 ? (
+                categories.map((cat) => (
                   <tr
                     key={cat.id}
                     className="group hover:bg-white/2 transition-colors"
@@ -186,9 +218,21 @@ const ListCategoriesPage = () => {
                       <div className="p-4 rounded-full bg-white/5 text-slate-600">
                         <BookOpen className="w-10 h-10" />
                       </div>
-                      <p className="text-slate-500 font-serif italic text-lg">
-                        No se han encontrado registros en este archivo.
-                      </p>
+                      <div className="space-y-2">
+                        <p className="text-slate-500 font-serif italic text-lg">
+                          {searchTerm
+                            ? `No se encontraron resultados para "${searchTerm}"`
+                            : "No se han encontrado registros en este archivo."}
+                        </p>
+                        {searchTerm && (
+                          <button
+                            onClick={clearSearch}
+                            className="text-[#b59a5d] text-sm font-bold uppercase tracking-widest hover:text-white transition-colors underline underline-offset-8"
+                          >
+                            Limpiar búsqueda
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -197,10 +241,35 @@ const ListCategoriesPage = () => {
           </table>
         </div>
 
-        {/* Footer Info */}
-        <div className="p-6 border-t border-white/5 bg-white/1 text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">
-          <span>{filteredCategories.length} Entradas Registradas</span>
-          {/* <span>Sistema de Archivo v2.4</span> */}
+        {/* Pagination Footer */}
+        <div className="p-6 border-t border-white/5 bg-white/1 flex items-center justify-between">
+          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">
+            Mostrando {categories.length} de {meta?.total || 0} Entradas
+          </div>
+
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              disabled={!meta?.hasPrev}
+              onClick={() => setPage((p) => p - 1)}
+              className="h-10 w-10 border border-white/5 text-slate-400 hover:text-white hover:bg-white/5 rounded-xl disabled:opacity-20"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </Button>
+            <div className="flex items-center px-4 bg-white/5 border border-white/10 rounded-xl text-xs font-black text-[#b59a5d]">
+              {page} / {meta?.lastPage || 1}
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              disabled={!meta?.hasNext}
+              onClick={() => setPage((p) => p + 1)}
+              className="h-10 w-10 border border-white/5 text-slate-400 hover:text-white hover:bg-white/5 rounded-xl disabled:opacity-20"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
       </div>
     </div>
