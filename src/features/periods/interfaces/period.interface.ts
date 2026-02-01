@@ -31,3 +31,13 @@ export interface GetAllPeriodsResponse {
     prevPage: number | null;
   };
 }
+
+export interface SetCurrentPeriodResponse {
+  id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  isCurrent: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

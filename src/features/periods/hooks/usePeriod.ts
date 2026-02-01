@@ -35,8 +35,33 @@ export const usePeriod = () => {
     });
   };
 
+  const setCurrent = useMutation({
+    mutationKey: ["set-current-period"],
+    mutationFn: periodService.setCurrentPeriod,
+    onSuccess: () => {
+      toast.success("Periodo establecido como actual");
+      queryClient.invalidateQueries({ queryKey: ["list", "period"] });
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      } else {
+        toast.error("Error al establecer el periodo como actual");
+      }
+    },
+    onMutate: () => {
+      toast.loading("Estableciendo periodo como actual...", {
+        id: "set-current-period",
+      });
+    },
+    onSettled: () => {
+      toast.dismiss("set-current-period");
+    },
+  });
+
   return {
     createPeriod: created,
     listPeriods,
+    setCurrent,
   };
 };

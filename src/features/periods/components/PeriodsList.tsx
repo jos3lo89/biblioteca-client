@@ -14,6 +14,7 @@ import {
   Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import SetCurrentPeriodDialog from "./SetCurrentPeriodDialog";
 
 const PeriodsList = () => {
   const [page, setPage] = useState(1);
@@ -153,13 +154,22 @@ const PeriodsList = () => {
                   </td>
                   <td className="px-8 py-6 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-10 w-10 text-slate-500 hover:text-[#b59a5d] hover:bg-[#b59a5d]/10 rounded-xl"
-                      >
-                        <MoreVertical className="w-5 h-5" />
-                      </Button>
+                      {!period.isCurrent && (
+                        <SetCurrentPeriodDialog
+                          periodId={period.id}
+                          periodName={period.name}
+                          trigger={
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-10 w-10 text-slate-500 hover:text-[#b59a5d] hover:bg-[#b59a5d]/10 rounded-xl"
+                              title="Establecer como actual"
+                            >
+                              <MoreVertical className="w-5 h-5" />
+                            </Button>
+                          }
+                        />
+                      )}
                       <Button
                         variant="ghost"
                         size="icon"
