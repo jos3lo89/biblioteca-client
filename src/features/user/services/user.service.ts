@@ -1,6 +1,9 @@
 import http from "@/config/axios";
 import type { RegisterUserDto } from "../schemas/user.schema";
-import type { RegisterUserResponse } from "../interfaces/user.interface";
+import type {
+  ListStudentsResponse,
+  RegisterUserResponse,
+} from "../interfaces/user.interface";
 
 export const userService = {
   register: async (userData: RegisterUserDto) => {
@@ -8,6 +11,16 @@ export const userService = {
       "/auth/register",
       userData,
     );
+    return data;
+  },
+
+  listStudents: async (page: number, limit: number) => {
+    const { data } = await http.get<ListStudentsResponse>("/users/students", {
+      params: {
+        page,
+        limit,
+      },
+    });
     return data;
   },
 };

@@ -29,3 +29,7 @@ export const ListCategoriesPage = lazy(
 export const PeriodsPage = lazy(
   () => import("@/features/periods/pages/PeriodsPages"),
 );
+
+export const StudentsPage = lazy(
+  () => import("@/features/user/pages/StudentsPage"),
+);

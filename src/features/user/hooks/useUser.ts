@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { userService } from "../services/user.service";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
@@ -27,7 +27,14 @@ export const useUser = () => {
     },
   });
 
+  const listStudents = (page: number = 1, limit: number = 5) => {
+    return useQuery({
+      queryKey: ["list", "students", page, limit],
+      queryFn: () => userService.listStudents(page, limit),
+    });
+  };
   return {
     registerUser,
+    listStudents,
   };
 };

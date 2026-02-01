@@ -14,6 +14,7 @@ import {
   ChevronRight,
   List,
   PlusCircle,
+  Users2,
 } from "lucide-react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -50,7 +51,18 @@ const AdminLayout = () => {
   const navItems: NavItem[] = [
     { label: "Panel de Control", path: "/dashboard", icon: LayoutDashboard },
     { label: "Acervo Digital", path: "/books", icon: Library },
-    { label: "Registrar Usuario", path: "/users/register", icon: UserPlus },
+    {
+      label: "Estudiantes",
+      icon: Users2,
+      children: [
+        { label: "Listado", path: "/admin/students", icon: List },
+        {
+          label: "Registrar Estudiante",
+          path: "/admin/students-create",
+          icon: UserPlus,
+        },
+      ],
+    },
     {
       label: "Categorías",
       icon: Tag,
