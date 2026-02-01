@@ -25,3 +25,7 @@ export const CategoryCreatePage = lazy(
 export const ListCategoriesPage = lazy(
   () => import("@/features/category/pages/ListCategoriesPage"),
 );
+
+export const PeriodsPage = lazy(
+  () => import("@/features/periods/pages/PeriodsPages"),
+);
