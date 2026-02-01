@@ -47,7 +47,6 @@ const BookReadingPage = () => {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1.0);
   const [rotation, setRotation] = useState<number>(0);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Container ref for responsive width calculations
   const containerRef = useRef<HTMLDivElement>(null);
