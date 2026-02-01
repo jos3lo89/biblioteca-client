@@ -1,0 +1,7 @@
+import { lazy } from "react";
+
+export const LoginPage = lazy(() => import("@/features/auth/pages/LoginPage"));
+export const DashboardPage = lazy(
+  () => import("@/features/dashboard/pages/DashboardPage"),
+);
+export const BooksPage = lazy(() => import("@/features/books/page/BooksPage"));

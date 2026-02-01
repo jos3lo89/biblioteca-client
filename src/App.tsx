@@ -1,8 +1,17 @@
+import { RouterProvider } from "react-router-dom";
+import { routes } from "./routes/routes";
+import { QueryClientProvider } from "@tanstack/react-query";
+import queryClient from "./config/tanstack-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Toaster } from "sonner";
+
 function App() {
   return (
-    <div>
-      <h1>App</h1>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={routes} />
+      <ReactQueryDevtools initialIsOpen={false} />
+      <Toaster closeButton richColors position="top-center" />
+    </QueryClientProvider>
   );
 }
 
