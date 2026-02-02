@@ -73,3 +73,7 @@ export interface CreateBookResponse {
   updatedAt: string;
   coverUrl: string;
 }
+
+export interface DeleteBookResponse {
+  message: string;
+}

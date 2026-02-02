@@ -13,6 +13,7 @@ import {
   List,
   PlusCircle,
   Users2,
+  Wrench,
 } from "lucide-react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -91,6 +92,17 @@ const AdminLayout = () => {
       icon: CalendarRange,
     },
     // { label: "Matrículas", path: "/admin/enrollments", icon: ShieldCheck },
+    {
+      label: "Administración",
+      icon: Wrench,
+      children: [
+        {
+          label: "Usuarios",
+          path: "/admin/users",
+          icon: Users2,
+        },
+      ],
+    },
   ];
 
   // Auto-expand menu if child is active

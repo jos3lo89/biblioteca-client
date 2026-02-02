@@ -126,4 +126,29 @@
     @apply fixed inset-0 pointer-events-none opacity-[0.03] z-[-1];
     background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
   }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-[#0b1120];
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full transition-colors;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-[#b59a5d]/40;
+  }
+
+  /* Support for Firefox */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) #0b1120;
+  }
 }

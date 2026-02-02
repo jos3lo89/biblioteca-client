@@ -10,18 +10,33 @@ import {
   Calendar,
   MoreVertical,
   Layers,
+  Trash2,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LoadingState from "@/components/common/LoadingState";
 import ErrorState from "@/components/common/ErrorState";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const BooksTable = () => {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const [bookToDelete, setBookToDelete] = useState<{
+    id: string;
+    title: string;
+  } | null>(null);
   const limit = 5;
-  const { listBooks } = useBook();
+  const { listBooks, deleteBook } = useBook();
 
   const {
     data: booksResponse,
@@ -182,16 +197,19 @@ const BooksTable = () => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-10 w-10 text-slate-500 hover:text-[#b59a5d] hover:bg-[#b59a5d]/10 rounded-xl"
+                        onClick={() =>
+                          setBookToDelete({ id: book.id, title: book.title })
+                        }
+                        className="h-10 w-10 text-slate-500 hover:text-red-500 hover:bg-red-500/10 rounded-xl"
                       >
-                        <MoreVertical className="w-5 h-5" />
+                        <Trash2 className="w-5 h-5" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-10 w-10 text-slate-500 hover:text-white hover:bg-white/10 rounded-xl"
+                        className="h-10 w-10 text-slate-500 hover:text-[#b59a5d] hover:bg-[#b59a5d]/10 rounded-xl"
                       >
-                        <ChevronRight className="w-5 h-5" />
+                        <MoreVertical className="w-5 h-5" />
                       </Button>
                     </div>
                   </td>
@@ -257,6 +275,69 @@ const BooksTable = () => {
           </Button>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog
+        open={!!bookToDelete}
+        onOpenChange={(open) => !open && setBookToDelete(null)}
+      >
+        <AlertDialogContent className="max-w-xl bg-[#0b1120]/95 backdrop-blur-3xl border-white/10 rounded-[2.5rem] p-0 overflow-hidden text-white shadow-2xl">
+          <AlertDialogHeader className="p-8 border-b border-white/5 bg-white/2">
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-2xl bg-red-500/10 text-red-500 border border-red-500/20">
+                <Trash2 className="w-6 h-6" />
+              </div>
+              <div>
+                <AlertDialogTitle className="text-2xl font-black uppercase tracking-tight text-white text-left">
+                  ¿Eliminar <span className="text-[#b59a5d]">Tomo?</span>
+                </AlertDialogTitle>
+                <p className="text-xs font-serif italic text-slate-500 mt-1">
+                  Acción de borrado permanente de registro digital.
+                </p>
+              </div>
+            </div>
+          </AlertDialogHeader>
+
+          <div className="p-8 space-y-6">
+            <AlertDialogDescription className="text-slate-400 font-serif italic text-lg leading-relaxed">
+              Esta acción es irreversible. Se eliminará el registro de
+              <span className="text-white font-bold not-italic ml-1">
+                "{bookToDelete?.title}"
+              </span>
+              del archivo digital de forma permanente.
+            </AlertDialogDescription>
+
+            <div className="p-4 bg-[#b59a5d]/5 border border-[#b59a5d]/10 rounded-2xl flex items-start gap-4">
+              <div className="p-2 rounded-lg bg-[#b59a5d]/10 text-[#b59a5d] shrink-0">
+                <BookOpen className="w-4 h-4" />
+              </div>
+              <p className="text-[11px] text-slate-500 italic leading-relaxed">
+                Nota: Todos los registros asociados, incluyendo reseñas y
+                archivos almacenados en la nube, serán purgados del sistema
+                central de la biblioteca.
+              </p>
+            </div>
+          </div>
+
+          <AlertDialogFooter className="p-8 bg-white/2 border-t border-white/5 gap-4">
+            <AlertDialogCancel className="h-12 px-8 bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10 hover:text-white rounded-2xl transition-all font-black uppercase tracking-widest text-[10px] m-0!">
+              Conservar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (bookToDelete) {
+                  deleteBook.mutate(bookToDelete.id, {
+                    onSuccess: () => setBookToDelete(null),
+                  });
+                }
+              }}
+              className="h-12 px-8 bg-red-600/90 text-white hover:bg-red-500 rounded-2xl transition-all shadow-xl shadow-red-500/10 font-black uppercase tracking-widest text-[10px] border border-red-500/20"
+            >
+              Confirmar Purga
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

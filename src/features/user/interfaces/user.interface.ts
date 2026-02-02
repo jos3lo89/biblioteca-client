@@ -10,7 +10,7 @@ export interface RegisterUserResponse {
   updatedAt: string;
 }
 
-export interface ListStudentsResponse {
+export interface ListUsersWithRoleResponse {
   data: Array<{
     id: string;
     dni: string;

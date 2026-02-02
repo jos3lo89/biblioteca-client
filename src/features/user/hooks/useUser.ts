@@ -11,6 +11,7 @@ export const useUser = () => {
     mutationFn: userService.register,
     onSuccess: () => {
       toast.success("Usuario registrado exitosamente");
+      queryClient.invalidateQueries({ queryKey: ["list", "users", "admin"] });
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -64,9 +65,21 @@ export const useUser = () => {
     },
   });
 
+  const listUsersAdmin = (
+    page: number = 1,
+    limit: number = 5,
+    search?: string,
+  ) => {
+    return useQuery({
+      queryKey: ["list", "users", "admin", page, limit, search],
+      queryFn: () => userService.listUsersAdmin(page, limit, search),
+    });
+  };
+
   return {
     registerUser,
     listStudents,
     registerStudent,
+    listUsersAdmin,
   };
 };
