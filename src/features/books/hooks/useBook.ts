@@ -55,5 +55,27 @@ export const useBook = () => {
     },
   });
 
-  return { listBooks, getBookById, getBookForReading, createBook };
+  const deleteBook = useMutation({
+    mutationKey: ["delete", "book"],
+    mutationFn: bookService.deleteBook,
+    onSuccess: () => {
+      toast.success("Libro eliminado exitosamente");
+      queryClient.invalidateQueries({ queryKey: ["list", "books"] });
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      } else {
+        toast.error("Error al eliminar el libro");
+      }
+    },
+    onMutate: () => {
+      toast.loading("Eliminando libro...", { id: "delete-book" });
+    },
+    onSettled: () => {
+      toast.dismiss("delete-book");
+    },
+  });
+
+  return { listBooks, getBookById, getBookForReading, createBook, deleteBook };
 };
