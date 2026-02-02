@@ -19,9 +19,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 /**
- * UserRegisterPage - Administrative form for enrolling new users into the system.
+ * UsersAdminPage - Administrative form for enrolling new users into the system.
  */
-const UserRegisterPage = () => {
+const UsersAdminPage = () => {
   const { registerUser } = useUser();
 
   const {
@@ -32,7 +32,7 @@ const UserRegisterPage = () => {
   } = useForm<RegisterUserDto>({
     resolver: zodResolver(registerUserSchema),
     defaultValues: {
-      role: "STUDENT",
+      role: "ADMIN",
     },
   });
 
@@ -49,11 +49,7 @@ const UserRegisterPage = () => {
         <h1 className="text-4xl font-black text-white tracking-tight">
           Registro de <span className="text-[#b59a5d]">Usuarios</span>
         </h1>
-        {/* <p className="text-slate-400 font-serif italic text-lg leading-relaxed">
-          "Inscriba nuevos miembros para que puedan acceder a la sabiduría
-          acumulada."
-        </p>
-        <div className="h-1.5 w-32 bg-linear-to-r from-[#b59a5d] to-transparent rounded-full mt-2" /> */}
+        <div className="h-1.5 w-32 bg-linear-to-r from-[#b59a5d] to-transparent rounded-full mt-2" />
       </div>
 
       {/* Form Card */}
@@ -233,15 +229,8 @@ const UserRegisterPage = () => {
           </form>
         </CardContent>
       </Card>
-
-      {/* Footer Insight */}
-      {/* <div className="mt-8 text-center opacity-30">
-        <p className="text-[10px] font-black uppercase tracking-[0.4em]">
-          Protocolo de Registro v2.4.0
-        </p>
-      </div> */}
     </div>
   );
 };
 
-export default UserRegisterPage;
+export default UsersAdminPage;

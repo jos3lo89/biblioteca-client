@@ -4,7 +4,7 @@ import type {
   RegisterUserDto,
 } from "../schemas/user.schema";
 import type {
-  ListStudentsResponse,
+  ListUsersWithRoleResponse,
   RegisterUserResponse,
 } from "../interfaces/user.interface";
 
@@ -18,13 +18,18 @@ export const userService = {
   },
 
   listStudents: async (page: number, limit: number, search?: string) => {
-    const { data } = await http.get<ListStudentsResponse>("/users/students", {
-      params: {
-        page,
-        limit,
-        search: search || "",
+    const role = "STUDENT";
+
+    const { data } = await http.get<ListUsersWithRoleResponse>(
+      `/users/${role}/with-role`,
+      {
+        params: {
+          page,
+          limit,
+          search: search || "",
+        },
       },
-    });
+    );
     return data;
   },
 
@@ -32,6 +37,22 @@ export const userService = {
     const { data } = await http.post<RegisterUserResponse>(
       "/users/students/register",
       userData,
+    );
+    return data;
+  },
+
+  listUsersAdmin: async (page: number, limit: number, search?: string) => {
+    const role = "ADMIN";
+
+    const { data } = await http.get<ListUsersWithRoleResponse>(
+      `/users/${role}/with-role`,
+      {
+        params: {
+          page,
+          limit,
+          search: search || "",
+        },
+      },
     );
     return data;
   },

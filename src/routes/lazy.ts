@@ -17,7 +17,7 @@ export const ProfilePage = lazy(
 );
 
 export const UserRegisterPage = lazy(
-  () => import("@/features/user/pages/UserRegisterPage"),
+  () => import("@/features/user/pages/UsersAdminPage"),
 );
 export const CategoryCreatePage = lazy(
   () => import("@/features/category/pages/CreatedCategoryPage"),

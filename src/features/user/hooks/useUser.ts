@@ -64,9 +64,21 @@ export const useUser = () => {
     },
   });
 
+  const listUsersAdmin = (
+    page: number = 1,
+    limit: number = 5,
+    search?: string,
+  ) => {
+    return useQuery({
+      queryKey: ["list", "users", "admin", page, limit, search],
+      queryFn: () => userService.listUsersAdmin(page, limit, search),
+    });
+  };
+
   return {
     registerUser,
     listStudents,
     registerStudent,
+    listUsersAdmin,
   };
 };
