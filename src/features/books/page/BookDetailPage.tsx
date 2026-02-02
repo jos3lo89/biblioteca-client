@@ -12,6 +12,8 @@ import {
   Bookmark,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import RatingStars from "@/features/ratings/components/RatingStars";
+import ReviewSection from "@/features/reviews/components/ReviewSection";
 
 /**
  * BookDetailPage - Premium Virtual Library Detail View.
@@ -133,6 +135,11 @@ const BookDetailPage = () => {
               </div>
             </div>
 
+            {/* Book Rating Stars */}
+            <div className="animate-in fade-in duration-700 delay-500 fill-mode-backwards">
+              <RatingStars bookId={book.id} />
+            </div>
+
             <div className="h-0.5 w-full bg-linear-to-r from-white/10 via-white/5 to-transparent rounded-full animate-in scale-x-0 origin-left duration-1000 delay-500 fill-mode-backwards" />
           </div>
 
@@ -185,6 +192,11 @@ const BookDetailPage = () => {
                 </p>
               </div>
             </div>
+          </div>
+
+          {/* Agora of Opinions (Reviews) */}
+          <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-1200 fill-mode-backwards">
+            <ReviewSection bookId={book.id} />
           </div>
         </div>
       </div>
