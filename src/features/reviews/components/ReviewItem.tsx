@@ -64,19 +64,21 @@ const ReviewItem = ({ review, bookId, depth = 0 }: ReviewItemProps) => {
                     <Trash2 className="w-4 h-4" />
                   </Button>
                 )}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setIsReplying(!isReplying)}
-                  className={cn(
-                    "h-9 w-9 rounded-xl transition-all",
-                    isReplying
-                      ? "text-[#b59a5d] bg-[#b59a5d]/10"
-                      : "text-slate-500 hover:text-[#b59a5d] hover:bg-[#b59a5d]/10",
-                  )}
-                >
-                  <MessageSquare className="w-4 h-4" />
-                </Button>
+                {depth < 2 && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsReplying(!isReplying)}
+                    className={cn(
+                      "h-9 w-9 rounded-xl transition-all",
+                      isReplying
+                        ? "text-[#b59a5d] bg-[#b59a5d]/10"
+                        : "text-slate-500 hover:text-[#b59a5d] hover:bg-[#b59a5d]/10",
+                    )}
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                  </Button>
+                )}
               </div>
             </div>
 
