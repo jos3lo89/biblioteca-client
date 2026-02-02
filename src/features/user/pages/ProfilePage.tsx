@@ -6,6 +6,7 @@ import {
   Fingerprint,
   BookOpen,
   ArrowLeft,
+  LayoutDashboard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
@@ -36,15 +37,27 @@ const ProfilePage = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-8 duration-700 ease-out fill-mode-backwards p-4">
       {/* Navigation & Header */}
-      <div className="flex flex-col gap-8">
-        <Button
-          variant="ghost"
-          onClick={() => navigate(-1)}
-          className="w-fit text-slate-400 hover:text-white hover:bg-white/5 group border border-transparent hover:border-white/10 rounded-xl transition-all"
-        >
-          <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" />
-          Volver
-        </Button>
+      <div className="space-y-8">
+        <div className="flex items-center justify-between">
+          <Button
+            variant="ghost"
+            onClick={() => navigate(-1)}
+            className="w-fit text-slate-400 hover:text-white hover:bg-white/5 group border border-transparent hover:border-white/10 rounded-xl transition-all"
+          >
+            <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" />
+            Volver
+          </Button>
+
+          {user.role === "ADMIN" && (
+            <Button
+              onClick={() => navigate("/dashboard")}
+              className="h-11 px-6 bg-[#b59a5d]/10 text-[#b59a5d] border border-[#b59a5d]/20 hover:bg-[#b59a5d] hover:text-[#0b1120] rounded-xl transition-all flex items-center gap-2 group font-black uppercase tracking-widest text-[10px] shadow-lg shadow-[#b59a5d]/5"
+            >
+              <LayoutDashboard className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+              Panel Administrativo
+            </Button>
+          )}
+        </div>
 
         <section className="relative space-y-4">
           <div className="flex flex-col gap-2">
