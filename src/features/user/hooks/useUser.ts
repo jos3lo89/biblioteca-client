@@ -11,6 +11,7 @@ export const useUser = () => {
     mutationFn: userService.register,
     onSuccess: () => {
       toast.success("Usuario registrado exitosamente");
+      queryClient.invalidateQueries({ queryKey: ["list", "users", "admin"] });
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
